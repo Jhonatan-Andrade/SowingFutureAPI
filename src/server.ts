@@ -3,6 +3,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
+import { UserRouter } from "./router";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.register(cors, {
     credentials: true,
 });
 
-
+app.register(UserRouter);
 app.get('/', (req, res) => {
     res.send({ message: 'Hello World' });
 })
