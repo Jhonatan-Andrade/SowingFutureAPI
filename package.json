@@ -2,8 +2,7 @@
   "name": "sowingfutureapi",
   "version": "1.0.0",
   "description": "<img src=\"./SowingFuture.png\" width=\"600px\" >",
-  "type": "module",
-  "main": "server.ts",
+  "main": "src/server.js",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
     "test": "jest",
@@ -23,11 +22,10 @@
   "dependencies": {
     "@fastify/cors": "^11.1.0",
     "@fastify/rate-limit": "^10.3.0",
-    "@prisma/client": "^6.17.1",
+    "@prisma/client": "^6.18.0",
     "bcrypt": "^6.0.0",
     "fastify": "^5.6.1",
-    "jsonwebtoken": "^9.0.2",
-    "sowingfutureapi": "link:"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
