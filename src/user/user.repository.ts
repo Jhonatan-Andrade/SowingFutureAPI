@@ -1,4 +1,4 @@
-import { log } from "console";
+
 import { prisma } from "../dataBase/prisma.client";
 import { ApiError } from "../error";
 import { UserSignup, UserProfile, UserUpdate, UserRepository, UserFindByEmail } from "./user.entities";
@@ -12,11 +12,9 @@ export class UserRepositoryDb implements UserRepository {
             const userCreated =  await prisma.user.create({
                 data: user,
             });
-            console.log(userCreated);
         
             return userCreated;
         }catch(error){
-            console.error("Error creating user:", error);
             throw new ApiError(500,"Error creating user");
         }
     }
@@ -40,7 +38,7 @@ export class UserRepositoryDb implements UserRepository {
     }
     async findById(id: string): Promise< UserProfile | null> {
         try{
-            const {password, ...userFindById} = await prisma.user.findUnique({
+            const userFindById = await prisma.user.findUnique({
                 select: {
                     id: true,
                     name: true,

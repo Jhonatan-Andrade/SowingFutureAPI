@@ -11,9 +11,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.user.deleteMany({
-    where: {
-      email: "jhonatanDev@example.com",
-    },
+    where: { email: "jhonatanDev@example.com" },
   });
   await app.close();
 });
@@ -44,5 +42,6 @@ describe("User Login Tests", () => {
       .send(user);
     
     expect(response.status).toBe(200);
+
   });
 });

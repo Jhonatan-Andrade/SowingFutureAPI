@@ -6,10 +6,12 @@ services:
     container_name: sowing_future_postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 6764645
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: code
       POSTGRES_DB: sowing_future_db
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
