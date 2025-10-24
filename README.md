@@ -37,3 +37,12 @@ Acesse os protótipos interativos para visualizar o fluxo completo do sistema:
 ![PDFKit](https://img.shields.io/badge/PDFKit-FF6600?style=for-the-badge&logo=adobe&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
+### Implement
+- crie o arquivo .env  seguindo o exemplo
+- utilize o docker compose para iniciar o container do postgres 
+```bash
+    npm install
+    npm rum migrate:deploy
+    npm rum build && npm rum start
+```
+
