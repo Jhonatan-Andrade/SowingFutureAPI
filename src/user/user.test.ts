@@ -1,6 +1,7 @@
 
 import request from "supertest";
 import { app } from "../app";
+import { prisma } from "../dataBase/prisma.client";
 
 let api: any;
 
@@ -9,6 +10,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await prisma.user.deleteMany({
+    where: {
+      email: "jhonatanDev@example.com",
+    },
+  });
   await app.close();
 });
 
@@ -36,6 +42,7 @@ describe("User Login Tests", () => {
     const response = await request(api)
       .post("/users/login")
       .send(user);
+    
     expect(response.status).toBe(200);
   });
 });

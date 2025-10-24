@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { UserLogin, UserSignup } from "../entities/user";
-import { UserUseCase} from "../services/user";
+import { UserLogin, UserSignup } from "./user.entities";
+import { UserUseCase} from "./user.services";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 
 const userUseCase = new UserUseCase()
@@ -26,6 +26,8 @@ export async function UserControllers(app: FastifyInstance) {
     });
     app.get('/users/profile',{preHandler:isAuthenticated}, async (request, reply) => {
         const email = request.user.email;
+        console.log("Email Controller", email);
+        
         if (!email) {
             reply.status(401).send({ message: 'Token invalid or expired' });
             return;
