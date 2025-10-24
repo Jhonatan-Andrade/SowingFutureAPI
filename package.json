@@ -5,8 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
-    "migrate": "npx prisma generate && npx prisma migrate dev",
+    "migrate:dev": "npx prisma generate && npx prisma migrate dev",
     "test": "jest",
+
+    "migrate:deploy": "npx prisma generate && npx prisma migrate deploy",
     "build": "tsc",
     "start": "node dist/server.js"
   },
