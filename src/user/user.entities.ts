@@ -18,7 +18,7 @@ export interface UserUpdate {
     name?: string;
     password?: string; 
 }
-export interface UserFindByEmail {
+export interface UserFindByEmailOrName {
     id: string;
     name: string;
     email: string;
@@ -26,7 +26,8 @@ export interface UserFindByEmail {
 }
 export interface UserRepository {
     create(user: UserSignup): Promise<UserProfile>;
-    findByEmail(email: string): Promise<UserFindByEmail | null>;
-    findById(id: string): Promise<UserProfile | null>;
+    findByEmail(email: string): Promise<UserFindByEmailOrName | null>;
+    findByName(name: string): Promise<UserFindByEmailOrName | null>;
     update(user: UserUpdate): Promise<UserProfile>;
+    delete(id:string):Promise<any>;
 }

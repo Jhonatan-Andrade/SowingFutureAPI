@@ -7,18 +7,21 @@ import bcrypt from "bcrypt";
 import { signUser } from "../middlewares/isAuthenticated";
 
 
-class UserUseCase  {
+class UserServices {
     private userRepository: UserRepository;
     constructor() {
         this.userRepository = new UserRepositoryDb();
     }
-    async createUser(data: UserSignup): Promise<{ token: string }> {
+    async createUser(data: UserSignup): Promise<{token:string}> {
         if(!data.name || !data.email || !data.password)throw new ApiError(400,'Name, email and password are required');
         if(!isValidEmail(data.email))throw new ApiError(422,'Invalid email format');
         if(!isValidPassword(data.password))throw new ApiError(422,'Invalid password format');
 
-        const user = await this.userRepository.findByEmail(data.email);
-        if (user?.email === data.email || user?.name === data.name) throw new ApiError(409, 'User already exists ');
+        const userEmail = await this.userRepository.findByEmail(data.email);
+        if (userEmail?.email === data.email) throw new ApiError(409, 'User already exists ');
+
+        const userName = await this.userRepository.findByName(data.name);
+        if (userName?.name === data.name) throw new ApiError(409, 'User already exists ');
         
         const password = await bcrypt.hash(data.password, 10);
         data.password = password;
@@ -26,24 +29,25 @@ class UserUseCase  {
         const userCreated = await this.userRepository.create(data);
 
         const token = signUser(userCreated.email);
-        return { token };
+
+        return {token};
     }
-    async loginUser(data: UserLogin): Promise<{token: string }> {
+    async loginUser(data: UserLogin): Promise<{token:string}> {
         if(!data.email || !data.password) throw new ApiError(400,'Email and password are required');
         if(!isValidEmail(data.email)) throw new ApiError(422,'Invalid email format');
         if(!isValidPassword(data.password)) throw new ApiError(400,'Invalid password format');
 
         const userPassword = await this.userRepository.findByEmail(data.email);
-        if(!userPassword) throw new ApiError(404,'User not found');
+        if(!userPassword) throw new ApiError(404,'User User not found');
 
         const verifyPassword = await bcrypt.compare(data.password, userPassword.password);
         if(!verifyPassword) throw new ApiError(401,'Incorrect password');
 
         const token = signUser(userPassword.email);
-        return { token };
+        return {token};
     }
-    async getUserProfile(email: string): Promise<UserProfile | null> {
-        console.log("Email Service", email);
+    async searchUser(email: string): Promise<UserProfile> {
+
         if (!email) throw new ApiError(400, 'Email is required');
         if (!isValidEmail(email)) throw new ApiError(422, 'Invalid email format');
 
@@ -65,5 +69,17 @@ class UserUseCase  {
         if (!updatedUser) throw new ApiError(500,"Error updating user");
         return updatedUser;
     }
+    async deleteUser(email:string):Promise<{deleted:boolean}>{
+        if(!email) throw new ApiError(400,'Email are required');
+        const user = await this.userRepository.findByEmail(email)
+        if(!user) throw new ApiError(404,'User not found');
+        try {
+            await this.userRepository.delete(user.id)
+            return {deleted:true}
+        } catch (error) {
+            return {deleted:true}
+        }
+
+    }
 }
-export { UserUseCase };
+export { UserServices };
