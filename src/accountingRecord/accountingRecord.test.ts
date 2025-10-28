@@ -22,7 +22,17 @@ beforeAll(async () => {
         email:email, 
         password:password
       });
-    token = response.body.token;
+    if (response.body.statusCode === 409) {
+        const loginRes = await request(api)
+          .post("/users/login")
+          .send({
+            email:email, 
+            password:password
+          });
+        token = loginRes.body.token
+    }else{
+      token = response.body.token;
+    }
   }catch(err){
     console.log(err);
   }
@@ -33,8 +43,11 @@ afterAll(async () => {
   await accountingRecordServices.deleteAccountingRecord(idAccountingRecord)
 
   const userServices = new UserServices()
-  await userServices.deleteUser(email)
-
+  try{
+      userServices.deleteUser(email);
+  }catch(err){
+    console.log(err);
+  }
   await app.close();
 });
 
