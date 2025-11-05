@@ -2,6 +2,7 @@ import fastify from "fastify";
 import cors from "@fastify/cors";
 import { UserControllers } from "./user/user.controllers";
 import { AccountingRecordControllers } from "./accountingRecord/accountingRecord.controllers";
+import { GoalsControllers } from "./goals/goals.controllers";
 
 export const app = fastify({ logger: false });
 app.register(cors, {
@@ -17,3 +18,4 @@ app.get('/', (req, res) => {
 })
 app.register(UserControllers);
 app.register(AccountingRecordControllers)
+app.register(GoalsControllers)

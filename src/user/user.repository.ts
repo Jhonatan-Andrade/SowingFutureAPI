@@ -7,7 +7,6 @@ export class UserRepositoryDb implements UserRepository {
 
 
     async create(user: UserSignup): Promise<UserProfile> {
-        
         try{
             const userCreatedData =  await prisma.user.create({
                 data: user,

@@ -24,6 +24,12 @@ export interface UserFindByEmailOrName {
     email: string;
     password: string; 
 }
+export interface UserMemory {
+    id: string;
+    name: string;
+    email: string;
+    password: string; 
+}
 export interface UserRepository {
     create(user: UserSignup): Promise<UserProfile>;
     findByEmail(email: string): Promise<UserFindByEmailOrName | null>;

@@ -15,16 +15,29 @@ model User {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   accountingRecords AccountingRecord[]
+  goals Goals[]
   @@map("user")
 }
 model AccountingRecord {
   id            String     @id @default(uuid())
-  title         String     @unique
+  title         String     
   value         Int     
   type          String     
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-
   userId        String     
   user          User       @relation(fields: [userId], references: [id])
+  @@map("accountingRecords")
+}
+model Goals {
+  id            String     @id @default(uuid())
+  title         String     
+  targetValue   Int     
+  currentValue  Int
+  date          String    
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  userId        String     
+  user          User       @relation(fields: [userId], references: [id])
+  @@map("goals")
 }

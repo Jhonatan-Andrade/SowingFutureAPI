@@ -28,8 +28,8 @@ export async function AccountingRecordControllers(app: FastifyInstance) {
         const email = request.user.email;
         const {id} = request.body as {id:string}
         try {
-            const data = await accountingRecordServices.deleteAccountingRecord(id)
-            reply.status(200).send(data);
+            await accountingRecordServices.deleteAccountingRecord(id)
+            reply.status(200).send({message: 'Accounting record delete successfully'});
         } catch (error) {
             reply.status(401).send({ message: 'Accounting Record not delete' });
         }
