@@ -4,6 +4,7 @@ import { GoalsDb } from "./goals.repository";
 import { ApiError } from "../error";
 import { UserRepositoryDb } from "../user/user.repository";
 import { UserRepository } from "../user/user.entities";
+import { isValidMoney, monetaryFormatting } from "../utils/monetaryFormatting";
 
 
 class GoalsServices  {
@@ -18,11 +19,15 @@ class GoalsServices  {
 
         const {title,targetValue , currentValue,date} = data;
         if(!title || !targetValue || !currentValue || !date)throw new ApiError(400,'Title , targetValue,currentValue or date are required');
+        const dataTargetValue = monetaryFormatting(targetValue)
+        if (isValidMoney(dataTargetValue)) throw new ApiError(500,"Error creating goals")
+        const dataCurrentValue = monetaryFormatting(currentValue)
+        if (isValidMoney(dataCurrentValue)) throw new ApiError(500,"Error creating goals")
 
         try {
             const user = await this.userRepository.findByEmail(email);
             if (!user) throw new ApiError(404, 'User not found');
-            await this.goals.create({title,targetValue , currentValue,date,userId:user.id});
+            await this.goals.create({title,targetValue:dataTargetValue , currentValue:dataCurrentValue,date,userId:user.id});
             return {create:true}
         } catch (err) {
             return {create:false}

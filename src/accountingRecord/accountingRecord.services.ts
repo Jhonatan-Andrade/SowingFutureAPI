@@ -5,6 +5,7 @@ import { isValidEmail } from "../utils/isValidLogin";
 import { ApiError } from "../error";
 import { UserRepositoryDb } from "../user/user.repository";
 import { UserRepository } from "../user/user.entities";
+import { isValidMoney, monetaryFormatting } from "../utils/monetaryFormatting";
 
 
 class AccountingRecordServices  {
@@ -14,7 +15,7 @@ class AccountingRecordServices  {
         this.accountingRecord = new AccountingRecordDb();
         this.userRepository = new UserRepositoryDb();
     }
-    async createAccountingRecord(email:string,data: AccountingRecordCreate): Promise<{create:boolean}> {
+    async createAccountingRecord(email:string,data: AccountingRecordCreate): Promise<{create:boolean}|AccountingRecordProfile> {
         if (!email) throw new ApiError(400, 'Email is required');
 
         const {title,value,type} = data;
@@ -23,8 +24,11 @@ class AccountingRecordServices  {
         try {
             const user = await this.userRepository.findByEmail(email);
             if (!user) throw new ApiError(404, 'User not found');
-            await this.accountingRecord.create({title,value,type,userId:user.id});
-            return {create:true}
+            if (isValidMoney(value)) throw new ApiError(500,"Error creating accounting record")
+            const dataValue = monetaryFormatting(value)
+            
+            const data = await this.accountingRecord.create({title,value:dataValue,type,userId:user.id});
+            return data
         } catch (err) {
             return {create:false}
         }
@@ -49,4 +53,5 @@ class AccountingRecordServices  {
         catch(err){return {delete:false}}
     }
 }
+
 export { AccountingRecordServices };

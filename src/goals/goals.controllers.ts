@@ -7,7 +7,6 @@ import { isAuthenticated } from "../middlewares/isAuthenticated";
 const goalsServices = new GoalsServices()
 
 export async function GoalsControllers(app: FastifyInstance) {
-
     app.post('/goals', { preHandler: isAuthenticated }, async (request, reply) => {
         const email = request.user.email;
         const data  = request.body as GoalsCreate

@@ -18,7 +18,7 @@ export async function isAuthenticated(
 
   if (!secret) {
     reply.code(500).send({ message: "Server error" });
-    return done();
+    return;
   }
 
   const { authorization } = req.headers;
@@ -26,16 +26,16 @@ export async function isAuthenticated(
 
   if (!token) {
     reply.code(401).send({ message: "Token not provided" });
-    return done();
+    return ;
   }
 
   try {
     const payload = jwt.verify(token, secret);
     (req as any).user = payload;
-    return done();
+    return;
   } catch (err) {
     reply.code(401).send({ message: "Token invalid or expired" });
-    return done();
+    return;
   }
 }
 

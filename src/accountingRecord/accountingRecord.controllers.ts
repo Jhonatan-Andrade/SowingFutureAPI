@@ -6,14 +6,19 @@ import { isAuthenticated } from "../middlewares/isAuthenticated";
 
 const accountingRecordServices = new AccountingRecordServices()
 
+
 export async function AccountingRecordControllers(app: FastifyInstance) {
 
     app.post('/accounting-records', { preHandler: isAuthenticated }, async (request, reply) => {
         const email = request.user.email;
-        const data  = request.body as AccountingRecordCreate
-        await accountingRecordServices.createAccountingRecord(email,data)
+        const dataBody  = request.body as AccountingRecordCreate
+        try {
+            const data = await accountingRecordServices.createAccountingRecord(email,dataBody)
+            reply.status(201).send(data);
+        } catch (error) {
+            reply.status(401).send({ message: 'Accounting Record not found' });
+        }
 
-        reply.status(201).send({message: 'Accounting record created successfully'});
     });
     app.get('/accounting-records', { preHandler: isAuthenticated }, async (request, reply) => {
         const email = request.user.email;

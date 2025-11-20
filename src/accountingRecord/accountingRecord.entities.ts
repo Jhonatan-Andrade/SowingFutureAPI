@@ -1,25 +1,25 @@
 
 export interface AccountingRecordCreate {
     title: string;
-    value: number;
+    value: string;
     type: string;
 }
 export interface AccountingRecordCreateDb {
     title: string;
-    value: number;
+    value: string;
     type: string;
     userId:string
 }
 export interface AccountingRecordProfile {
     id: string;
     title: string;
-    value: number;
+    value: string;
     type: string;
 }
 export interface AccountingRecordUpdate {
     id: string;
     title?: string;
-    value?: number;
+    value?: string;
     type?: string;
 }
 export interface AccountingRecordRepository {

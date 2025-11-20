@@ -14,14 +14,30 @@ model User {
   password     String     @unique
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  transactions Transaction[]
   accountingRecords AccountingRecord[]
   goals Goals[]
   @@map("user")
 }
+model Transaction {
+  id            String     @id @default(uuid())
+  description   String     
+  value         String     
+  type          String   
+  category      String 
+  date          String
+  paymentMethod String
+  observations  String 
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  userId        String     
+  user          User       @relation(fields: [userId], references: [id])
+  @@map("transactions")
+}
 model AccountingRecord {
   id            String     @id @default(uuid())
   title         String     
-  value         Int     
+  value         String     
   type          String     
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -32,8 +48,8 @@ model AccountingRecord {
 model Goals {
   id            String     @id @default(uuid())
   title         String     
-  targetValue   Int     
-  currentValue  Int
+  targetValue   String     
+  currentValue  String
   date          String    
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
