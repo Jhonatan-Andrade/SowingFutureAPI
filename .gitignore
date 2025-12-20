@@ -1,5 +1,5 @@
 node_modules
-src/database/migrations
+prisma/migrations
 dist
 .env
 
