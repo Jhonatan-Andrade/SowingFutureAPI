@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS goals (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  target_value NUMERIC NOT NULL,
+  current_value NUMERIC NOT NULL,
+  target_date DATE NOT NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);

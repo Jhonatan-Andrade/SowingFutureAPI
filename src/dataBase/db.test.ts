@@ -1,6 +1,4 @@
 
-//import { PrismaClient } from '@prisma/client';
-import { prisma } from "../dataBase/prisma.client";
 import { app } from "../app";
 let api: any;
 
@@ -13,8 +11,16 @@ afterAll(async () => {
 });
 describe("Database Connection Tests", () => {
   it("should connect to the database and perform a simple query", async () => {
-    //const prisma = new PrismaClient();
-    const users = await prisma.user.findMany(); 
-    expect(Array.isArray(users)).toBe(true);
+    const response = await api.inject({
+      method: "GET",
+      url: "/users/profile",
+      headers: {
+        Authorization: `Bearer ${process.env.TEST_TOKEN}`,
+      },
+    });
+    expect(response.statusCode).toBe(200);
+    const userProfile = JSON.parse(response.body);
+    expect(userProfile).toHaveProperty("email");
+    expect(userProfile).toHaveProperty("userName");
   }); 
 });

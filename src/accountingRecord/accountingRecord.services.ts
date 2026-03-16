@@ -6,7 +6,6 @@ import { ApiError } from "../error";
 import { UserRepositoryDb } from "../user/user.repository";
 import { UserRepository } from "../user/user.entities";
 
-
 class AccountingRecordServices  {
     private accountingRecord: AccountingRecordRepository;
     private userRepository : UserRepository
@@ -17,13 +16,13 @@ class AccountingRecordServices  {
     async createAccountingRecord(email:string,data: AccountingRecordCreate): Promise<{create:boolean}> {
         if (!email) throw new ApiError(400, 'Email is required');
 
-        const {title,value,type} = data;
-        if(!title || !value || !type)throw new ApiError(400,'Title , Value or Type are required');
+        const {title,valueMoney,recordsInAndOut} = data;
+        if(!title || !valueMoney || !recordsInAndOut)throw new ApiError(400,'Title , Value or Records In And Out are required');
 
         try {
             const user = await this.userRepository.findByEmail(email);
             if (!user) throw new ApiError(404, 'User not found');
-            await this.accountingRecord.create({title,value,type,userId:user.id});
+            await this.accountingRecord.create({title,valueMoney,recordsInAndOut,userId:user.id});
             return {create:true}
         } catch (err) {
             return {create:false}

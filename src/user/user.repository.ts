@@ -1,50 +1,57 @@
-
-import { prisma } from "../dataBase/prisma.client";
+import db from "../dataBase/databaseClient";
 import { ApiError } from "../error";
 import { UserSignup, UserProfile, UserUpdate, UserRepository, UserFindByEmailOrName } from "./user.entities";
+    
 
 export class UserRepositoryDb implements UserRepository {
 
 
     async create(user: UserSignup): Promise<UserProfile> {
         try{
-            const userCreatedData =  await prisma.user.create({
-                data: user,
-            });
-            return userCreatedData;
+            const userQueryResult =  await db.query(
+                'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
+                [user.userName, user.email, user.password]
+            );
+            return userQueryResult.rows[0] as UserProfile;
         }catch(error){
             throw new ApiError(500,"Error creating user");
         }
     }
     async findByEmail(email: string): Promise<UserFindByEmailOrName | null> {
         try{
-            const userFindByEmailData = await prisma.user.findUnique({
-                select: { id: true, name: true, email: true, password: true },
-                where: {email}
-            });
-            return userFindByEmailData;
+            const userQueryResult = await db.query(
+                'SELECT id, name as "userName", email, password FROM users WHERE email = $1',
+                [email]
+            );
+            return userQueryResult.rows[0] as UserFindByEmailOrName;
         }catch(error){
+            if (typeof error === "object" && error !== null && "code" in error && (error as any).code === '42703') {
+                return null; 
+            }
             throw new ApiError(400,"Error finding user by email");
         }
     }
-    async findByName(name: string): Promise<UserFindByEmailOrName | null> {
+    async findByName(userName: string): Promise<UserFindByEmailOrName | null> {
         try{
-            const userFindByEmailData = await prisma.user.findUnique({
-                select: { id: true, name: true, email: true, password: true },
-                where: {name}
-            });
-            return userFindByEmailData;
+            const userQueryResult = await db.query(
+                'SELECT id, name as "userName", email, password FROM users WHERE name = $1',
+                [userName]  
+            );
+            return userQueryResult.rows[0] as UserFindByEmailOrName;
         }catch(error){
-            throw new ApiError(400,"Error finding user by email");
+            if (typeof error === "object" && error !== null && "code" in error && (error as any).code === '42703') {
+                return null; 
+            }
+            throw new ApiError(400,"Error finding user by name");
         }
     }
     async findById(id: string): Promise< UserProfile | null> {
         try{
-            const userFindByIdData = await prisma.user.findUnique({
-                select: { id: true, name: true, email: true },
-                where: {id}
-            });
-            return userFindByIdData;
+            const userFindByIdData = await db.query(
+                'SELECT id, name as "userName", email, password FROM users WHERE id = $1',
+                [id]
+            );
+            return userFindByIdData.rows[0] as UserProfile;
         }catch(error){
             throw new ApiError(400,"Error finding user by ID");
         }
@@ -52,20 +59,20 @@ export class UserRepositoryDb implements UserRepository {
     }
     async update(user: UserUpdate): Promise<UserProfile> {
         try{
-            const userUpdatedData = await prisma.user.update({
-                where: { id: user.id },
-                data: user,
-            });
-            return userUpdatedData;
+            const userUpdatedData = await db.query(
+                'UPDATE users SET name = $1, password = $3 WHERE id = $4 RETURNING *',
+                [user.userName, user.password, user.id]
+            );
+            return userUpdatedData.rows[0] as UserProfile;
         }catch(error){
             throw new ApiError(500,"Error updating user");
         }
     }
     async delete(id:string){
         try {
-            await prisma.user.delete({where:{id}})
+            await db.query('DELETE FROM users WHERE id = $1', [id]);
         } catch (error) {
-            throw new ApiError(500,"Error");
+            throw new ApiError(500,"Error deleting user");
         }
 
     }

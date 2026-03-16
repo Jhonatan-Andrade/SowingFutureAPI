@@ -11,6 +11,8 @@ export async function GoalsControllers(app: FastifyInstance) {
     app.post('/goals', { preHandler: isAuthenticated }, async (request, reply) => {
         const email = request.user.email;
         const data  = request.body as GoalsCreate
+      
+        
         await goalsServices.createGoals(email,data)
 
         reply.status(201).send({message: 'Goals created successfully'});

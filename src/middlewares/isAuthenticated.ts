@@ -6,36 +6,31 @@ declare module "fastify" {
     };
   }
 }
-import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import jwt from "jsonwebtoken";
 const secret = process.env.SECRET_KEY;
 
 export async function isAuthenticated(
   req: FastifyRequest,
-  reply: FastifyReply,
-  done: HookHandlerDoneFunction
+  reply: FastifyReply
 ) {
 
   if (!secret) {
-    reply.code(500).send({ message: "Server error" });
-    return done();
+    return reply.code(500).send({ message: "Server error" });
   }
 
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1];
 
   if (!token) {
-    reply.code(401).send({ message: "Token not provided" });
-    return done();
+    return reply.code(401).send({ message: "Token not provided" });
   }
 
   try {
     const payload = jwt.verify(token, secret);
     (req as any).user = payload;
-    return done();
   } catch (err) {
-    reply.code(401).send({ message: "Token invalid or expired" });
-    return done();
+    return reply.code(401).send({ message: "Token invalid or expired" });
   }
 }
 

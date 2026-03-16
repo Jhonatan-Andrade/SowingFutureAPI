@@ -8,8 +8,8 @@ const userServices = new UserServices()
 
 export async function UserControllers(app: FastifyInstance) {
     app.post('/users/signup', async (request, reply) => {
-        const { name, email, password } = request.body as UserSignup;
-        const user = await userServices.createUser({ name, email, password });
+        const { userName, email, password } = request.body as UserSignup;
+        const user = await userServices.createUser({ userName, email, password });
         if (!user) {
             reply.status(400).send({ message: 'User could not be created' });
             return;
@@ -19,6 +19,7 @@ export async function UserControllers(app: FastifyInstance) {
     app.post('/users/login', async (request, reply) => {
         const { email, password } = request.body as UserLogin;
         const user = await userServices.loginUser({ email, password });
+          
         if (!user) {
             reply.status(401).send({ message: 'Invalid email or password' });
             return;
@@ -27,7 +28,6 @@ export async function UserControllers(app: FastifyInstance) {
     });
     app.get('/users/profile',{preHandler:isAuthenticated}, async (request, reply) => {
         const email = request.user.email;
-        
         if (!email) {
             reply.status(401).send({ message: 'Token invalid or expired' });
             return;

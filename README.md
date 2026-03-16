@@ -42,7 +42,7 @@ Acesse os protótipos interativos para visualizar o fluxo completo do sistema:
 - utilize o docker compose para iniciar o container do postgres 
 ```bash
     npm install
-    npm rum migrate:deploy
+    npx rum migrate deploy
     npm rum build && npm rum start
 ```
 
