@@ -8,22 +8,22 @@ export interface AccountingRecordCreateDb {
     title: string;
     valueMoney: boolean;
     recordsInAndOut: string;
-    userId:string
+    userId:number
 }
 export interface AccountingRecordProfile {
-    id: string;
+    id: number;
     title: string;
     valueMoney: boolean;
     recordsInAndOut: string;
 }
 export interface AccountingRecordUpdate {
-    id: string;
+    id: number;
     title?: string;
     valueMoney?: boolean;
     recordsInAndOut?: string;
 }
 export interface AccountingRecordRepository {
     create(record: AccountingRecordCreateDb): Promise<AccountingRecordProfile>;
-    findByUserId(userId: string): Promise<AccountingRecordProfile[] | null>;
-    delete(id: string): Promise<void>;
+    findByUserId(userId: number): Promise<AccountingRecordProfile[] | null>;
+    delete(id: number): Promise<void>;
 }

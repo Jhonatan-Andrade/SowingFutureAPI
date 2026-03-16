@@ -48,12 +48,12 @@ class UserServices {
         if (!user) throw new ApiError(404, 'User not found');
 
         return {
-            id: user.id as string,
+            id: user.id as number,
             userName: user.userName as string,
             email: user.email as string,
         };    
     }
-    async updateUserProfile(id: string, userName?: string, password?: string): Promise<UserProfile> {
+    async updateUserProfile(id: number, userName?: string, password?: string): Promise<UserProfile> {
         if (!id) throw new ApiError(400, 'User ID is required');
         if (password && !isValidPassword(password)) throw new ApiError(400, 'Invalid password format');
 

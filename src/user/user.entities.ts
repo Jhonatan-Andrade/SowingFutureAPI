@@ -9,23 +9,23 @@ export interface UserSignup {
     password: string;
 }
 export interface UserProfile {
-    id: string;
+    id: number;
     userName: string;
     email: string; 
 }
 export interface UserUpdate {
-    id: string;
+    id: number;
     userName?: string;
     password?: string; 
 }
 export interface UserFindByEmailOrName {
-    id: string;
+    id: number;
     userName: string;
     email: string;
     password: string; 
 }
 export interface UserMemory {
-    id: string;
+    id: number;
     userName: string;
     email: string;
     password: string; 
@@ -35,5 +35,5 @@ export interface UserRepository {
     findByEmail(email: string): Promise<UserFindByEmailOrName | null>;
     findByName(userName: string): Promise<UserFindByEmailOrName | null>;
     update(user: UserUpdate): Promise<UserProfile>;
-    delete(id:string):Promise<any>;
+    delete(id:number):Promise<any>;
 }

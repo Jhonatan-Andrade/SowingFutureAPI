@@ -39,7 +39,7 @@ class GoalsServices  {
 
         return goalss;    
     }
-    async deleteGoals(id:string):Promise<{delete:boolean}>{
+    async deleteGoals(id:number):Promise<{delete:boolean}>{
         if (!id) throw new ApiError(400, 'id is required');
         try{
             await this.goals.delete(id)

@@ -8,6 +8,7 @@ import { join } from "path";
 const createUsersTable = readFileSync(join(__dirname, "./sql/createUsersTable.sql"), "utf-8");
 const createAccountingRecordsTable = readFileSync(join(__dirname, "./sql/createAccountingRecordsTable.sql"), "utf-8");
 const createGoalsTable = readFileSync(join(__dirname, "./sql/createGoalsTable.sql"), "utf-8");
+const createTransactionTable = readFileSync(join(__dirname, "./sql/createTransactionTable.sql"), "utf-8");
 
 
 const url = process.env.DATABASE_URL;
@@ -29,6 +30,7 @@ const createTables = async () => {
     await pool.query(createUsersTable);
     await pool.query(createAccountingRecordsTable);
     await pool.query(createGoalsTable);
+    await pool.query(createTransactionTable);
   } catch (err) {
     console.error("Erro ao criar tabelas:", err);
   }

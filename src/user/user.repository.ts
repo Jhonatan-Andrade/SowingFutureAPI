@@ -68,7 +68,7 @@ export class UserRepositoryDb implements UserRepository {
             throw new ApiError(500,"Error updating user");
         }
     }
-    async delete(id:string){
+    async delete(id:number){
         try {
             await db.query('DELETE FROM users WHERE id = $1', [id]);
         } catch (error) {

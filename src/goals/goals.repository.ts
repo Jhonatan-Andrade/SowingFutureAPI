@@ -16,7 +16,7 @@ export class GoalsDb implements GoalsRepository {
             throw new ApiError(500,"Error creating goals");
         }
     }
-    async findByUserId(userId: string): Promise< GoalsProfile[] | null> {
+    async findByUserId(userId: number): Promise< GoalsProfile[] | null> {
         try{
             const goalsData = await db.query(
                 'SELECT id, title, target_value as "targetValue", current_value as "currentValue", target_date as "targetDate" FROM goals WHERE user_id = $1',
@@ -27,7 +27,7 @@ export class GoalsDb implements GoalsRepository {
             throw new ApiError(400,"Error finding goals by ID");
         }
     }
-    async delete(id: string): Promise<void> {
+    async delete(id: number): Promise<void> {
         try{
             await db.query('DELETE FROM goals WHERE id = $1', [id]);   
         }catch(error){

@@ -27,7 +27,7 @@ export async function GoalsControllers(app: FastifyInstance) {
         }
     });
     app.delete('/goals', { preHandler: isAuthenticated }, async (request, reply) => {
-        const {id} = request.body as {id:string}
+        const {id} = request.body as {id:number}
         try {
             await goalsServices.deleteGoals(id)
             reply.status(200).send({message: 'Goals delete successfully'});

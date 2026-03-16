@@ -10,17 +10,17 @@ export interface GoalsCreateDb {
     targetValue: boolean;
     currentValue: boolean;
     targetDate:string;
-    userId:string
+    userId:number
 }
 export interface GoalsProfile {
-    id: string;
+    id: number;
     title: string;
     targetValue: boolean;
     currentValue: boolean;
     targetDate:string;
 }
 export interface GoalsUpdate {
-    id: string;
+    id: number;
     title?: string;
     targetValue?: boolean;
     currentValue?: boolean;
@@ -28,6 +28,6 @@ export interface GoalsUpdate {
 }
 export interface GoalsRepository {
     create(record: GoalsCreateDb): Promise<GoalsProfile>;
-    findByUserId(userId: string): Promise<GoalsProfile[] | null>;
-    delete(id: string): Promise<void>;
+    findByUserId(userId: number): Promise<GoalsProfile[] | null>;
+    delete(id: number): Promise<void>;
 }
