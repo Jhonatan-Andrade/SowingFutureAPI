@@ -1,14 +1,6 @@
 
 import { Pool  } from "pg";
-
-//importar o sql para criar as tabelas necessárias
-import { readFileSync } from "fs";
-import { join } from "path";
-
-const createUsersTable = readFileSync(join(__dirname, "./sql/createUsersTable.sql"), "utf-8");
-const createAccountingRecordsTable = readFileSync(join(__dirname, "./sql/createAccountingRecordsTable.sql"), "utf-8");
-const createGoalsTable = readFileSync(join(__dirname, "./sql/createGoalsTable.sql"), "utf-8");
-const createTransactionTable = readFileSync(join(__dirname, "./sql/createTransactionTable.sql"), "utf-8");
+import { createUsersTable, createAccountingRecordsTable, createGoalsTable, } from "./scriptSQL";
 
 
 const url = process.env.DATABASE_URL;
@@ -33,9 +25,15 @@ const createTables = async () => {
     await pool.query(createTransactionTable);
   } catch (err) {
     console.error("Erro ao criar tabelas:", err);
+    process.exit(1);
   }
 };
-createTables();
+
+// Inicializar banco de dados
+createTables().catch((err) => {
+  console.error("Erro crítico ao inicializar banco de dados:", err);
+  process.exit(1);
+});
 
 export default pool;
 

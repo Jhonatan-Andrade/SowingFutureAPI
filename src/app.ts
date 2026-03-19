@@ -7,13 +7,14 @@ import { TransactionControllers } from "./transaction/transaction.controllers";
 
 export const app = fastify({ logger: false });
 app.register(cors, {
-    origin: [],
-    credentials: true,
+    origin: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: false 
 });
 app.get('/', (req, res) => {
     res.send({
     message: "🌱 Bem-vindo(a) à SowingFutureAPI!",
-    description: "Uma API dedicada a semear um futuro mais sustentável 🌍",
+    description: "Uma API dedicada a semear um futuro 🌍",
     version: "1.0.0",
   });
 })
