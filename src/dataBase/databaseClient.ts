@@ -1,6 +1,6 @@
 
 import { Pool  } from "pg";
-import { createUsersTable, createAccountingRecordsTable, createGoalsTable, } from "./scriptSQL";
+import { createUsersTable, createAccountingRecordsTable, createGoalsTable, createTransactionTable } from "./scriptSQL";
 
 
 const url = process.env.DATABASE_URL;
