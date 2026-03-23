@@ -1,0 +1,21 @@
+
+POST http://localhost:3000/goals
+Content-Type: application/json
+
+{
+    "title":"testeTTT",
+    "targetValue":205.5 ,
+    "currentValue":105.5,
+    "targetDate":"09/12/2000"
+}
+
+###
+GET http://localhost:3000/goals
+
+###
+DELETE  http://localhost:3000/goals
+Content-Type: application/json
+
+{
+	"id":2
+}

@@ -1,0 +1,22 @@
+
+POST http://localhost:3000/transactions
+Content-Type: application/json
+
+{
+	"description":"JhonatanAQ",
+	"valueMoney":20000,
+	"recordsInAndOut":"recordsInAndOut",
+	 "category":"category",
+	 "targetDate":"09/12/2000",
+   "paymentMethod":"paymentMethod"
+}
+###
+GET http://localhost:3000/transactions
+
+###
+DELETE  http://localhost:3000/transactions
+Content-Type: application/json
+
+{
+	"id":2
+}

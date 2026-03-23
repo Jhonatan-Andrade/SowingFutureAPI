@@ -1,0 +1,20 @@
+
+POST http://localhost:3000/accounting-records
+Content-Type: application/json
+
+{
+	"title":"JhonatanAQ",
+	"valueMoney":20000,
+	"recordsInAndOut":"Test"
+}
+
+###
+GET http://localhost:3000/accounting-records
+
+###
+DELETE  http://localhost:3000/accounting-records
+Content-Type: application/json
+
+{
+	"id":2
+}

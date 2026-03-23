@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import fastifyCookie from '@fastify/cookie';
 import cors from "@fastify/cors";
 import { UserControllers } from "./user/user.controllers";
 import { AccountingRecordControllers } from "./accountingRecord/accountingRecord.controllers";
@@ -6,10 +7,14 @@ import { GoalsControllers } from "./goals/goals.controllers";
 import { TransactionControllers } from "./transaction/transaction.controllers";
 
 export const app = fastify({ logger: false });
+app.register(fastifyCookie, {
+  secret: "uma-chave-muito-secreta-e-longa", // Para assinar os cookies
+  parseOptions: {}
+})
 app.register(cors, {
     origin: true, 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: false 
+    credentials: true 
 });
 app.get('/', (req, res) => {
     res.send({

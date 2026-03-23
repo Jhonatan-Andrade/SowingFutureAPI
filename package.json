@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Jhonatan-Andrade/SowingFutureAPI#readme",
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.1.0",
     "@fastify/rate-limit": "^10.3.0",
     "bcrypt": "^6.0.0",

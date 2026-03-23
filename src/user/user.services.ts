@@ -5,6 +5,7 @@ import { isValidEmail, isValidPassword } from "../utils/isValidLogin";
 import { ApiError } from "../error";
 import bcrypt from "bcrypt";
 import { signUser } from "../middlewares/isAuthenticated";
+import { resolve } from "path";
 
 class UserServices {
     private userRepository: UserRepository;
@@ -37,6 +38,7 @@ class UserServices {
         if(!verifyPassword) throw new ApiError(401,'Incorrect password');
 
         const token = signUser(userPassword.email);
+        
         return {token};
     }
     async searchUser(email: string): Promise<UserProfile> {
