@@ -8,7 +8,7 @@ import { TransactionControllers } from "./transaction/transaction.controllers";
 
 export const app = fastify({ logger: false });
 app.register(fastifyCookie, {
-  secret: "uma-chave-muito-secreta-e-longa", // Para assinar os cookies
+  secret: process.env.SECRET_KEY_COOKIES,
   parseOptions: {}
 })
 app.register(cors, {
