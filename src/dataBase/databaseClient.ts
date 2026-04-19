@@ -2,8 +2,8 @@
 import { Pool  } from "pg";
 import { createUsersTable, createAccountingRecordsTable, createGoalsTable, createTransactionTable } from "./scriptSQL";
 
+const url = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@localhost:5432/sowing_future_db?schema=public`
 
-const url = process.env.DATABASE_URL;
 if (!url) {
   throw new Error("url não foi encontrada nas variáveis de ambiente.");
 }
