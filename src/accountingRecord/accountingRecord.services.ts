@@ -39,7 +39,7 @@ class AccountingRecordServices  {
 
         return accountingRecords;    
     }
-    async deleteAccountingRecord(id:string):Promise<{delete:boolean}>{
+    async deleteAccountingRecord(id:number):Promise<{delete:boolean}>{
         if (!id) throw new ApiError(400, 'id is required');
         try{
             await this.accountingRecord.delete(id)

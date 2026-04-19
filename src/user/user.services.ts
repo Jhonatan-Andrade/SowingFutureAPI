@@ -12,14 +12,14 @@ class UserServices {
     constructor() {this.userRepository = new UserRepositoryDb();}
 
     async createUser(data: UserSignup): Promise<{token:string}> {
-        if(!data.userName || !data.email || !data.password)throw new ApiError(400,'Name, email and password are required');
+        if(!data.name || !data.email || !data.password)throw new ApiError(400,'Name, email and password are required');
         if(!isValidEmail(data.email))throw new ApiError(422,'Invalid email format');
         if(!isValidPassword(data.password))throw new ApiError(422,'Invalid password format');
 
         const userEmail = await this.userRepository.findByEmail(data.email);
         if (userEmail?.email === data.email) throw new ApiError(409, 'User already exists ');
-        const userName = await this.userRepository.findByName(data.userName);
-        if (userName?.userName === data.userName) throw new ApiError(409, 'User already exists ');
+        const userName = await this.userRepository.findByName(data.name);
+        if (userName?.name === data.name) throw new ApiError(409, 'User already exists ');
         
         const password = await bcrypt.hash(data.password, 10);
         data.password = password;
@@ -51,15 +51,15 @@ class UserServices {
 
         return {
             id: user.id as number,
-            userName: user.userName as string,
+            name: user.name as string,
             email: user.email as string,
         };    
     }
-    async updateUserProfile(id: number, userName?: string, password?: string): Promise<UserProfile> {
+    async updateUserProfile(id: number, name?: string, password?: string): Promise<UserProfile> {
         if (!id) throw new ApiError(400, 'User ID is required');
         if (password && !isValidPassword(password)) throw new ApiError(400, 'Invalid password format');
 
-        const updatedUser = await this.userRepository.update({ id, userName, password });
+        const updatedUser = await this.userRepository.update({ id, name, password });
         if (!updatedUser) throw new ApiError(500,"Error updating user");
         return updatedUser;
     }

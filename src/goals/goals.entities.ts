@@ -1,29 +1,29 @@
 
 export interface GoalsCreate {
     title: string;
-    targetValue: boolean;
-    currentValue: boolean;
+    targetValue: number;
+    currentValue: number;
     targetDate:string;
 }
 export interface GoalsCreateDb {
     title: string;
-    targetValue: boolean;
-    currentValue: boolean;
+    targetValue: number;
+    currentValue: number;
     targetDate:string;
     userId:number
 }
 export interface GoalsProfile {
     id: number;
     title: string;
-    targetValue: boolean;
-    currentValue: boolean;
+    targetValue: number;
+    currentValue: number;
     targetDate:string;
 }
 export interface GoalsUpdate {
     id: number;
     title?: string;
-    targetValue?: boolean;
-    currentValue?: boolean;
+    targetValue?: number;
+    currentValue?: number;
     targetDate?:string;
 }
 export interface GoalsRepository {

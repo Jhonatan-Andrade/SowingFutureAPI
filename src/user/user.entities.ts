@@ -4,36 +4,36 @@ export interface UserLogin {
     password: string;
 }
 export interface UserSignup {
-    userName: string;
+    name: string;
     email: string;
     password: string;
 }
 export interface UserProfile {
     id: number;
-    userName: string;
+    name: string;
     email: string; 
 }
 export interface UserUpdate {
     id: number;
-    userName?: string;
+    name?: string;
     password?: string; 
 }
 export interface UserFindByEmailOrName {
     id: number;
-    userName: string;
+    name: string;
     email: string;
     password: string; 
 }
 export interface UserMemory {
     id: number;
-    userName: string;
+    name: string;
     email: string;
     password: string; 
 }
 export interface UserRepository {
     create(user: UserSignup): Promise<UserProfile>;
     findByEmail(email: string): Promise<UserFindByEmailOrName | null>;
-    findByName(userName: string): Promise<UserFindByEmailOrName | null>;
+    findByName(name: string): Promise<UserFindByEmailOrName | null>;
     update(user: UserUpdate): Promise<UserProfile>;
     delete(id:number):Promise<any>;
 }

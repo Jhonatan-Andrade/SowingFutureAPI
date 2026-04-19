@@ -4,6 +4,7 @@ import { GoalsDb } from "./goals.repository";
 import { ApiError } from "../error";
 import { UserRepositoryDb } from "../user/user.repository";
 import { UserRepository } from "../user/user.entities";
+import { isValidDate } from "../utils/isValidDate";
 
 
 class GoalsServices  {
@@ -18,7 +19,7 @@ class GoalsServices  {
  
         const {title,targetValue , currentValue,targetDate} = data;
         if(!title || !targetValue || !currentValue || !targetDate)throw new ApiError(400,'Title , targetValue,currentValue or targetDate are required');
-
+        if(!isValidDate(targetDate)) throw new ApiError(400, 'Data inválida');
         try {
             const user = await this.userRepository.findByEmail(email);
             if (!user) throw new ApiError(404, 'User not found');

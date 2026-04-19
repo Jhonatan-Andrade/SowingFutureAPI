@@ -1,16 +1,15 @@
-import db from "../dataBase/databaseClient";
+import {pool} from "../dataBase/databaseClient";
 import { ApiError } from "../error";
 import { UserSignup, UserProfile, UserUpdate, UserRepository, UserFindByEmailOrName } from "./user.entities";
     
 
 export class UserRepositoryDb implements UserRepository {
 
-
     async create(user: UserSignup): Promise<UserProfile> {
         try{
-            const userQueryResult =  await db.query(
+            const userQueryResult =  await pool.query(
                 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
-                [user.userName, user.email, user.password]
+                [user.name, user.email, user.password]
             );
             return userQueryResult.rows[0] as UserProfile;
         }catch(error){
@@ -19,7 +18,7 @@ export class UserRepositoryDb implements UserRepository {
     }
     async findByEmail(email: string): Promise<UserFindByEmailOrName | null> {
         try{
-            const userQueryResult = await db.query(
+            const userQueryResult = await pool.query(
                 'SELECT id, name as "userName", email, password FROM users WHERE email = $1',
                 [email]
             );
@@ -33,7 +32,7 @@ export class UserRepositoryDb implements UserRepository {
     }
     async findByName(userName: string): Promise<UserFindByEmailOrName | null> {
         try{
-            const userQueryResult = await db.query(
+            const userQueryResult = await pool.query(
                 'SELECT id, name as "userName", email, password FROM users WHERE name = $1',
                 [userName]  
             );
@@ -47,7 +46,7 @@ export class UserRepositoryDb implements UserRepository {
     }
     async findById(id: string): Promise< UserProfile | null> {
         try{
-            const userFindByIdData = await db.query(
+            const userFindByIdData = await pool.query(
                 'SELECT id, name as "userName", email, password FROM users WHERE id = $1',
                 [id]
             );
@@ -59,9 +58,9 @@ export class UserRepositoryDb implements UserRepository {
     }
     async update(user: UserUpdate): Promise<UserProfile> {
         try{
-            const userUpdatedData = await db.query(
+            const userUpdatedData = await pool.query(
                 'UPDATE users SET name = $1, password = $3 WHERE id = $4 RETURNING *',
-                [user.userName, user.password, user.id]
+                [user.name, user.password, user.id]
             );
             return userUpdatedData.rows[0] as UserProfile;
         }catch(error){
@@ -70,7 +69,7 @@ export class UserRepositoryDb implements UserRepository {
     }
     async delete(id:number){
         try {
-            await db.query('DELETE FROM users WHERE id = $1', [id]);
+            await pool.query('DELETE FROM users WHERE id = $1', [id]);
         } catch (error) {
             throw new ApiError(500,"Error deleting user");
         }

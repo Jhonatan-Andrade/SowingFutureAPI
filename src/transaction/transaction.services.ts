@@ -1,10 +1,10 @@
 
 import { TransactionCreate,TransactionCreateDb,TransactionRepository,TransactionProfile } from "./transaction.entities";  
 import { TransactionDb } from "./transaction.repository";
-import { isValidEmail } from "../utils/isValidLogin";
 import { ApiError } from "../error";
 import { UserRepositoryDb } from "../user/user.repository";
 import { UserRepository } from "../user/user.entities";
+import { isValidDate } from "../utils/isValidDate";
 
 class TransactionServices  {
     private transaction: TransactionRepository;
@@ -19,6 +19,7 @@ class TransactionServices  {
         const {description,valueMoney,recordsInAndOut,category,targetDate,paymentMethod} = data;
         if(!description || !valueMoney || !recordsInAndOut || !category || !targetDate || !paymentMethod)throw new ApiError(400,'All fields are required');
 
+        if(!isValidDate(targetDate)) throw new ApiError(400, 'Data inválida');
         try {
             const user = await this.userRepository.findByEmail(email);
             if (!user) throw new ApiError(404, 'User not found');

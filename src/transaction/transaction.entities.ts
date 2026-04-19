@@ -6,7 +6,6 @@ export interface TransactionCreate {
     category: string;
     targetDate:string;
     paymentMethod:string;
-    userId:number
 }
 export interface TransactionCreateDb {
     description: string;

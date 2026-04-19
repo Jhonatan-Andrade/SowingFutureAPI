@@ -6,10 +6,47 @@ import { isAuthenticated } from "../middlewares/isAuthenticated";
 
 const userServices = new UserServices()
 
+// Schemas de validação
+const registerSchema = {
+  body: {
+    type: 'object',
+    required: ['name', 'email', 'password'],
+    additionalProperties: false,
+    properties: {
+      name: { type: 'string', minLength: 2, maxLength: 50 },
+      email:    { type: 'string', format: 'email' },
+      password: { type: 'string', minLength: 8, maxLength: 24 },
+    },
+  },
+}
+
+const loginSchema = {
+  body: {
+    type: 'object',
+    required: ['email', 'password'],
+    additionalProperties: false,
+    properties: {
+      email:    { type: 'string', format: 'email' },
+      password: { type: 'string', minLength: 8, maxLength: 24 },
+    },
+  },
+}
+
+const forgotPasswordSchema = {
+  body: {
+    type: 'object',
+    required: ['email'],
+    additionalProperties: false,
+    properties: {
+      email: { type: 'string', format: 'email' },
+    },
+  },
+}
+
 export async function UserControllers(app: FastifyInstance) {
-    app.post('/users/signup', async (request, reply) => {
-        const { userName, email, password } = request.body as UserSignup;
-        const {token} = await userServices.createUser({ userName, email, password });
+    app.post('/users/signup',{ schema: registerSchema }, async (request, reply) => {
+        const { name, email, password } = request.body as UserSignup;
+        const {token} = await userServices.createUser({ name, email, password });
         if (!token) {
             reply.status(400).send({ message: 'User could not be created' });
             return;
@@ -24,7 +61,12 @@ export async function UserControllers(app: FastifyInstance) {
         });
         reply.status(200).send("Usuário criado com sucesso!");
     });
-    app.post('/users/login', async (request, reply) => {
+    app.post('/users/login',{
+        schema: loginSchema,
+        config: {
+            rateLimit: { max: 3, timeWindow: '1 minutes' },
+        },
+    },async (request, reply) => {
         const { email, password } = request.body as UserLogin;
         const {token} = await userServices.loginUser({ email, password });
           

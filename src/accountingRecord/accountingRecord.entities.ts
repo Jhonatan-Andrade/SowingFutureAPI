@@ -6,20 +6,20 @@ export interface AccountingRecordCreate {
 }
 export interface AccountingRecordCreateDb {
     title: string;
-    valueMoney: boolean;
+    valueMoney: number;
     recordsInAndOut: string;
     userId:number
 }
 export interface AccountingRecordProfile {
     id: number;
     title: string;
-    valueMoney: boolean;
+    valueMoney: number;
     recordsInAndOut: string;
 }
 export interface AccountingRecordUpdate {
     id: number;
     title?: string;
-    valueMoney?: boolean;
+    valueMoney?: number;
     recordsInAndOut?: string;
 }
 export interface AccountingRecordRepository {

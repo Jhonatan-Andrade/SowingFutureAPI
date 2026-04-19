@@ -2,12 +2,14 @@
 import { Pool  } from "pg";
 import { createUsersTable, createAccountingRecordsTable, createGoalsTable, createTransactionTable } from "./scriptSQL";
 
-const url = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@localhost:5432/sowing_future_db?schema=public`
-
-if (!url) {
-  throw new Error("url não foi encontrada nas variáveis de ambiente.");
-}
-const pool = new Pool({connectionString: url});
+const dbConfig = {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  database: process.env.DB_NAME,
+};
+export const pool = new Pool(dbConfig);
 
 
 pool.connect()
@@ -35,5 +37,22 @@ createTables().catch((err) => {
   process.exit(1);
 });
 
-export default pool;
+export async function waitForDatabase() {
+  let attempts = 0;
+  const maxAttempts = 3;
+  
+  while (attempts < maxAttempts) {
+    try {
+      const client = await pool.connect();
+      client.release();
+      return;
+    } catch (err) {
+      attempts++;
+      if (attempts >= maxAttempts) {
+        throw new Error(`Não foi possível conectar ao banco de dados após ${maxAttempts} tentativas`);
+      }
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+}
 
