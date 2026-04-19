@@ -5,8 +5,8 @@ services:
     container_name: sowing_future_postgres
     restart: always
     environment:
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: code
+      POSTGRES_USER: *****
+      POSTGRES_PASSWORD: *****
       POSTGRES_DB: sowing_future_db
     ports:
       - "5432:5432"
