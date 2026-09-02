@@ -73,10 +73,12 @@ server.register(UserControllers)
 server.register(TransactionControllers)
 server.register(GoalsControllers)
 
-server.listen({ port: 8080 }, (err, address) => {
+const port = Number(process.env.PORT) || 8080
+
+server.listen({ port,host: '0.0.0.0' }, (err, address) => {
   if (err) {
     server.log.error(err)
     process.exit(1)
   }
-  console.log(`Server is Running : http://localhost:8080`);
+  console.log(`Server is Running on ${address}`);
 })
