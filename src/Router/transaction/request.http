@@ -1,0 +1,24 @@
+
+POST http://localhost:8080/transactions
+Content-Type: application/json
+
+{
+	"description":"JhonatanAQ2",
+	"valueMoney":"R$ 10,00",
+	"recordsInAndOut":"recordsInAndOut",
+	"category":"category",
+	"targetDate":"30/08/2026",
+	"bankAccount":"mybank",
+    "paymentMethod":"paymentMethod"
+}
+###
+GET http://localhost:8080/transactions
+
+
+	bankAccount: "Itaú Unibanco"
+	category: "Transporte"
+	description: "fwfwfwf"
+	paymentMethod: "debito"
+	recordsInAndOut: "despesa"
+	targetDate: "2026-08-31"
+	valueMoney: "R$ 100,00"

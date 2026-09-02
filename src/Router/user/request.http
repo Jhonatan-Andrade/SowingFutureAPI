@@ -1,0 +1,32 @@
+GET http://localhost:8080/
+
+###
+POST http://localhost:8080/users/signup
+Content-Type: application/json
+
+{
+	"name":"Jhonatan",
+	"email":"jhonatanjaq@gmail.com",
+	"password":"Abcd@1abc"
+}
+
+###
+POST http://localhost:8080/users/signup
+Content-Type: application/json
+
+{
+	"name":"Bernadete",
+	"email":"bernadetedafonseca09@gmail.com",
+	"password":"Abcd@1abc"
+}
+###
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
+	"email":"jhonatanjaq@gmail.com",
+	"password":"Abcd@1abc"
+}
+
+###
+GET http://localhost:8080/users/profile

@@ -1,0 +1,24 @@
+
+POST http://localhost:8080/goals
+Content-Type: application/json
+
+{
+    "title":"testeTTT",
+    "date":"09/12/2000",
+    "targetValue":205.5 ,
+    "note":""
+}
+###
+POST  http://localhost:8080/goals/addMoney
+Content-Type: application/json
+
+{
+    "goalsId":"6a95e86e7e2c43be87b3b036",
+    "dateTime":"09/12/2000",
+    "value":"R$ 10,00"
+}
+###
+GET http://localhost:8080/goals
+
+###
+DELETE  http://localhost:3000/goals/1
